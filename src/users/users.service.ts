@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,11 +18,15 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
 
-  async findAll(query?: any): Promise<User[]> {
+  async findAll(
+    query?: FindOptionsWhere<User> | FindOptionsWhere<User>[],
+  ): Promise<User[]> {
     return await this.usersRepository.find({ where: query });
   }
 
-  async findOne(query: any): Promise<User> {
+  async findOne(
+    query: FindOptionsWhere<User> | FindOptionsWhere<User>[],
+  ): Promise<User> {
     return await this.usersRepository.findOne({
       where: query,
       relations: ['wishes'],

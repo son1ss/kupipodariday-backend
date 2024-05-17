@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { Offer } from './offer.entity';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { UpdateOfferDto } from './dto/update-offer.dto';
@@ -20,7 +20,9 @@ export class OffersService {
     return await this.offersRepository.save(offer);
   }
 
-  async findAll(query?: any): Promise<Offer[]> {
+  async findAll(
+    query?: FindOptionsWhere<Offer> | FindOptionsWhere<Offer>[],
+  ): Promise<Offer[]> {
     return await this.offersRepository.find({
       where: query,
       relations: ['user', 'item'],

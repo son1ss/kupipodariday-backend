@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { FindManyOptions, In, Repository } from 'typeorm';
 import { Wishlist } from './wishlist.entity';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
@@ -32,7 +32,7 @@ export class WishlistsService {
     return await this.wishlistsRepository.save(wishlist);
   }
 
-  async findAll(query?: any): Promise<Wishlist[]> {
+  async findAll(query?: FindManyOptions<Wishlist>): Promise<Wishlist[]> {
     const wishlists = await this.wishlistsRepository.find({
       ...query,
       relations: {

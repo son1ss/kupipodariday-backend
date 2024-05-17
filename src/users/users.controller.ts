@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FindUsersDto } from './dto/find-users.dto';
+import { Like } from 'typeorm';
 
 @Controller('users')
 export class UsersController {
@@ -60,12 +61,10 @@ export class UsersController {
   @Post('find')
   async findMany(@Body() findUsersDto: FindUsersDto) {
     const query = findUsersDto.query.trim();
-    const users = await this.usersService.findAll({
-      where: [
-        { username: { $ilike: `%${query}%` } },
-        { email: { $ilike: `%${query}%` } },
-      ],
-    });
+    const users = await this.usersService.findAll([
+      { username: Like(`%${query}%`) },
+      { email: Like(`%${query}%`) },
+    ]);
     if (users.length === 0) {
       throw new NotFoundException('Users not found');
     }
