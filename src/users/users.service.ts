@@ -61,7 +61,6 @@ export class UsersService {
     } else {
       await this.usersRepository.update(id, {
         ...updateUserDto,
-        password: await bcrypt.hash(updateUserDto.password, 10),
       });
     }
 
